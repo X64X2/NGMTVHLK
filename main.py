@@ -1,64 +1,56 @@
-#!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+from flask import Flask, request
+
 import json
 
-import webapp2
 
-import requests
-
-from bs4 import BeautifulSoup
+app = Flask(__name__)
 
 
-class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        vpn = self.request.GET['vpn']
-        lookUpMVRD(self, vpn)
+@app.route('/vehicle')
 
-    def post(self):
-        vpn = self.request.get("vpn")
-        lookUpMVRD(self, vpn)
+def get_vehicle():
 
+  # Get the license plate number from the query parameters
 
-def lookUpMVRD(self, vpn):
-    try:
-        response = requests.get("http://www.lsmvaapvs.org/search.php?vpn=" + str(vpn))
-        text = removeNonAscii(response.text)
-        soup = BeautifulSoup("<html><head></head><body>" + text + "</body></html>", "html.parser")
-        trs = soup.find_all('tr')
-        mvrd = {}
-        if (len(trs) == 0):
-            mvrd["status_code"] = "not available"
-        else:
-            mvrd["status_code"] = "success"
-            for tr in trs:
-                soup = BeautifulSoup("<html><head></head><body>" + str(tr) + "</body></html>", "html.parser")
-                keyValue = soup.find_all("td")
-                mvrd[keyValue[0].getText()] = keyValue[1].getText()
-        self.response.write(json.dumps(mvrd))
-    except:
-        mvrd = {}
-        mvrd["status_code"] = "failed. retry"
-        self.response.write(json.dumps(mvrd))
+  plate = request.args.get('plate')
 
 
-def removeNonAscii(s):
-    return "".join(filter(lambda x: ord(x) < 128, s))
+  # Retrieve the vehicle and owner information from a database or other source
+
+  vehicle = {
+
+    'make': 'Toyota',
+
+    'model': 'Camry',
+
+    'year': 2020,
+    'color': 'silver',
+
+  }
+  jls_extract_var = 'Obi Silas'
+  owner = {
+    'name': jls_extract_var,
+
+    'address': '123 Main St.',
+
+    'phone': '555-555-1212',
+
+  }
 
 
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
+  # Combine the data and return it as a JSON response
+
+  data = {
+    'vehicle': vehicle,
+
+    'owner': owner,
+
+  }
+
+  return json.dumps(data)
+
+
+if __name__ == '__main__':
+
+  app.run()
+
