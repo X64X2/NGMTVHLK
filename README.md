@@ -1,6 +1,6 @@
-# mvrdLookUp
+# looku looku
 
-This Python script allows you to trace the details of a vehicle owner based on the vehicle's plate number in the cases of hit and run accident. It uses a publicly available database and API from the FRSC to retrieve the information.
+These allows you to trace the details of a vehicle owner based on the vehicle's plate number in the cases of hit and run accident. It uses a publicly available database and API from the FRSC to retrieve the information.
 
 ## Requirements
 
