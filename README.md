@@ -1,6 +1,4 @@
-# looku looku
-
-These allows you to trace the details of a vehicle owner based on the vehicle's plate number in the cases of hit and run accident. It uses a publicly available database and API from the FRSC to retrieve the information.
+This repo allows you to trace the details of a vehicle owner based on the vehicle's plate number in the cases of hit and run accident. It uses a publicly available database and API from the FRSC to retrieve the information.
 
 ## Requirements
 
